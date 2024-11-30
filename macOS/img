@@ -55,9 +55,6 @@ class ImagePreview():
         self.img_index = 0
         self.img_count = len(img_list)
         self.img_dict = {}
-        self.img_data = ""
-        self.img_name = ""
-        self.img_info = ""
         self.started = False
 
     def do_prev(self):
@@ -94,26 +91,33 @@ class ImagePreview():
 
     def refresh(self):
         self.started = True
-        img_width = self.width
-        self.img_name = self.img_list[self.img_index]
-        if self.img_name in self.img_dict:
-            self.img_data = self.img_dict[self.img_name]["data"]
-            img_width = self.img_dict[self.img_name]["width"]
+        img_name = self.img_list[self.img_index]
+        img_data = ""
+        img_width = 0
+        if img_name in self.img_dict:
+            img_data = self.img_dict[img_name]["data"]
+            img_width = self.img_dict[img_name]["width"]
         else:
-            with Image.open(self.img_name) as img:
-                self.img_data, img_width, _ = image_to_colored_grid(img, self.width, self.height)
-                self.img_dict[self.img_name] = {"data":self.img_data, "width":img_width}
+            with Image.open(img_name) as img:
+                img_data, img_width, _ = image_to_colored_grid(img, self.width, self.height)
+                self.img_dict[img_name] = {"data":img_data, "width":img_width}
 
-        self.img_info = f"{self.img_index+1}/{self.img_count}"
-        space = " " * int((img_width - len(self.img_info))/2)
-        self.img_info = space + self.img_info + "  "
+        img_info = f"{self.img_index+1}/{self.img_count}"
+        space = " " * int((img_width - len(img_info))/2)
+        img_info = space + img_info + "  "
 
-        space = " " * (img_width - len(self.img_name) - len(self.img_info))
-        self.img_name = space + self.img_name
+        space = " " * (img_width - len(img_name) - len(img_info))
+
+        cur_len = len(img_info + space + img_name)
+        if cur_len > img_width:
+            leak = cur_len - img_width + 3
+            img_name = "..." + img_name[leak:]
+
+        img_name = space + img_name
 
         self.manager.terminal.clear_stream()
-        tim.print(self.img_data)
-        tim.print(self.img_info+self.img_name)
+        tim.print(img_data)
+        tim.print(img_info+img_name)
 
 
 def run_img_app(width, height):
