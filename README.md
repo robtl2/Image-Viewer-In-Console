@@ -21,7 +21,7 @@ Press 'esc' to exit.
 
 it's should be like this:
 
-![img](./images/preview.jpg)
+<img src="./images/preview.jpg" alt="img" width="500" height="auto">
 
 or just run:
 
@@ -31,7 +31,7 @@ img <image_path>
 
 it's will print the image directly in the terminal like this:
 
-<img src="./images/preview2.jpg" alt="img" width="400px" height="auto">
+<img src="./images/preview2.jpg" alt="img" width="500" height="auto">
 
 ## Installation
 
