@@ -29,6 +29,10 @@ or just run:
 img <image_path>
 ``` 
 
+it's will print the image directly in the terminal like this:
+
+![img](./images/preview2.jpg)
+
 ## Installation
 
 first, clone the repo to your local:
