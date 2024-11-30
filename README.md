@@ -90,6 +90,9 @@ when you open a ssh session, run this command first:
 export TERM=xterm-truecolor
 ```
 
+in a linux ssh session:
+![img](./images/truecolor.jpg)
+
 if it's not work, change the terminal to warp :-)
 
 
