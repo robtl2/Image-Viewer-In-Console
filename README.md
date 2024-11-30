@@ -21,7 +21,7 @@ Press 'esc' to exit.
 
 it's should be like this:
 
-<img src="./images/preview.jpg" alt="img" width="500" height="auto">
+<img src="./images/preview.jpg" alt="img" width="650" height="auto">
 
 or just run:
 
