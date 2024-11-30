@@ -88,7 +88,7 @@ sorry, I don't have this idea for now
 
 
 ## Terminal color
-If you image's color is not good, you can try to set the terminal's color to true color.(Warp's default is true color, but in ssh it may be 256 color.)
+If your image's color display is not good, you can try to set the terminal's color to true color.(Warp's default is true color, but in ssh it may be 256 color.)
 
 when you open a ssh session, run this command first:
 
