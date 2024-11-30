@@ -31,7 +31,7 @@ img <image_path>
 
 it's will print the image directly in the terminal like this:
 
-![img](./images/preview2.jpg)
+<img src="./images/preview2.jpg" alt="img" width="400px" height="auto">
 
 ## Installation
 
