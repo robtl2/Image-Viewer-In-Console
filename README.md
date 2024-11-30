@@ -3,6 +3,32 @@ A Toy for viewing images in terminal.
 Use character "▄" preview image in a pixel style.
 Maybe you can use it to view some images in your ssh mission.
 
+## Usage
+
+It is strongly recommended to use WARP as the terminal tool, as other tools may have poor color display effects.
+- [Warp](https://www.warp.dev/)
+
+#
+
+To use it, go to the directory of the images and run:
+
+```bash
+img
+```
+
+Use the arrow keys to navigate the image.  
+Press 'esc' to exit.
+
+it's should be like this:
+
+![img](./images/preview.jpg)
+
+or just run:
+
+```bash
+img <image_path>
+``` 
+
 ## Installation
 
 #### Linux
@@ -54,32 +80,6 @@ sudo cp img /usr/local/bin/img
 #### Windows
 sorry, I don't have this idea for now
 
-
-## Usage
-
-It is strongly recommended to use WARP as the terminal tool, as other tools may have poor color display effects.
-- [Warp](https://www.warp.dev/)
-
-#
-
-To use it, go to the directory of the images and run:
-
-```bash
-img
-```
-
-Use the arrow keys to navigate the image.  
-Press 'esc' to exit.
-
-it's should be like this:
-
-![img](./images/preview.jpg)
-
-or just run:
-
-```bash
-img <image_path>
-``` 
 
 ## Terminal color
 If you image's color is not good, you can try to set the terminal's color to true color.(Warp's default is true color, but in ssh it may be 256 color.)
