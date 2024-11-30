@@ -1,0 +1,171 @@
+#!/usr/bin/env python3
+
+from pytermgui import tim
+import pytermgui as ptg
+from PIL import Image
+import os
+import sys
+import shutil
+
+def get_pixel_color(image, x, y): 
+    r, g, b = image.getpixel((x, y)) 
+    return f"{int(r)};{int(g)};{int(b)}"
+
+def image_to_colored_grid(image, width, height):
+    new_width = width
+    w, h = image.size
+    new_height = int((width / w) * h)
+
+    if new_height > height:
+        new_height = height
+        new_width = int((height / h) * w)
+
+    image = image.resize((new_width, new_height), resample=Image.LANCZOS)
+    image = image.convert("RGB")
+
+    # 转换成字符串
+    colored_grid = ""
+    block = "▄" 
+    
+    for y in range(0, new_height, 2): 
+        for x in range(new_width):
+            bg = get_pixel_color(image, x, y)
+            if y + 1 < new_height:
+                fg = get_pixel_color(image, x, y + 1)  
+            else:
+                fg = "1;1;1"
+            
+            line = f"[{fg} @{bg}]" + block
+            colored_grid += line
+        colored_grid += "\033[0m\n" 
+
+    return colored_grid, new_width, new_height
+
+def display_image(image_path, width, height):
+    with Image.open(image_path) as img:
+        img_grid, _, _  = image_to_colored_grid(img, width, height)  # 转换为带颜色的方格
+    tim.print(img_grid)  
+
+class ImagePreview():
+    def __init__(self, img_list, manager=None, width=40, height=40):
+        self.width = width
+        self.height = height
+        self.manager = manager
+        self.img_list = img_list
+        self.img_index = 0
+        self.img_count = len(img_list)
+        self.img_dict = {}
+        self.img_data = ""
+        self.img_name = ""
+        self.img_info = ""
+        self.started = False
+
+    def do_prev(self):
+        if not self.started:
+            self.refresh()
+            return
+
+        self.img_index -= 1
+        if self.img_index < 0:
+            self.img_index = len(self.img_list) - 1
+        self.refresh()
+
+    def do_next(self):
+        if not self.started:
+            self.refresh()
+            return
+        
+        self.img_index += 1
+        if self.img_index >= len(self.img_list):
+            self.img_index = 0
+        self.refresh()
+
+    def do_home(self):
+        self.img_index = 0
+        self.refresh()
+
+    def do_end(self):
+        if not self.started:
+            self.refresh()
+            return
+        
+        self.img_index = len(self.img_list) - 1
+        self.refresh()
+
+    def refresh(self):
+        self.started = True
+        img_width = self.width
+        self.img_name = self.img_list[self.img_index]
+        if self.img_name in self.img_dict:
+            self.img_data = self.img_dict[self.img_name]["data"]
+            img_width = self.img_dict[self.img_name]["width"]
+        else:
+            with Image.open(self.img_name) as img:
+                self.img_data, img_width, _ = image_to_colored_grid(img, self.width, self.height)
+                self.img_dict[self.img_name] = {"data":self.img_data, "width":img_width}
+
+        self.img_info = f"{self.img_index+1}/{self.img_count}"
+        space = " " * int((img_width - len(self.img_info))/2)
+        self.img_info = space + self.img_info + "  "
+
+        space = " " * (img_width - len(self.img_name) - len(self.img_info))
+        self.img_name = space + self.img_name
+
+        self.manager.terminal.clear_stream()
+        tim.print(self.img_data)
+        tim.print(self.img_info+self.img_name)
+
+
+def run_img_app(width, height):
+    current_directory = os.getcwd()
+    supported_formats = Image.registered_extensions().keys()  # 获取支持的格式
+
+    img_list = []
+    for filename in os.listdir(current_directory):
+        if filename.lower().endswith(tuple(supported_formats)):  
+            img_list.append(filename)
+
+    if len(img_list) == 0:
+        print("No image files found in the current directory.")
+        return
+
+    with ptg.WindowManager() as manager:
+        
+        img_preview = ImagePreview(img_list, manager, width, height)
+        manager.bind(" ", lambda *_: img_preview.do_next(), "next") # space
+        manager.bind("\x1b", lambda *_: manager.stop(), "quit") # esc
+        manager.bind("\x1b[A", lambda *_: img_preview.do_prev(), "prev") # up
+        manager.bind("\x1b[B", lambda *_: img_preview.do_next(), "next") # down
+        manager.bind("\x1b[D", lambda *_: img_preview.do_home(), "first") # left
+        manager.bind("\x1b[C", lambda *_: img_preview.do_end(), "last") # right
+
+        layout = ptg.Layout()
+        layout.add_slot("Body", width=width)
+        manager.layout = layout
+        manager.add(
+            ptg.Window(
+                ptg.Container(
+                    ptg.Label("image preview           esc:quit"), 
+                    ptg.Label("up:prev;  down or space:next;  left:first;  right:last"),
+                    box="EMPTY",
+                ),
+                box="EMPTY",
+                vertical_align=ptg.VerticalAlignment.TOP,
+            ),
+            assign="body",
+        )
+        
+
+def main(argv: list[str] | None = None):
+    size = shutil.get_terminal_size()
+    width = size.columns
+    height = (size.lines-2)*2
+    
+    if len(argv) == 0:
+        run_img_app(width, height)
+    else:
+        image_path = argv[0]
+        display_image(image_path, width, height)
+
+if __name__ == "__main__":
+    main(sys.argv[1:])
