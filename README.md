@@ -41,8 +41,16 @@ first, clone the repo to your local:
 git clone https://github.com/robtl2/Image-Viewer-In-Console.git
 ```
 
+```bash
+cd Image-Viewer-In-Console
+```
+
 #### Linux
 --------------------------------
+
+```bash
+python3 -m pip install -r requirements.txt
+```
 
 ```bash
 cd linux
@@ -56,12 +64,12 @@ chmod +x img
 sudo cp img /usr/local/bin/img
 ```
 
-```bash
-python3 -m pip install -r requirements.txt
-```
-
 #### macOS
 --------------------------------
+
+```bash
+/usr/local/bin/python3 -m pip install -r requirements.txt
+```
 
 ```bash
 cd macOS
@@ -73,10 +81,6 @@ chmod +x img
 
 ```bash
 sudo cp img /usr/local/bin/img
-```
-
-```bash
-/usr/local/bin/python3 -m pip install -r requirements.txt
 ```
 
 #### Windows
