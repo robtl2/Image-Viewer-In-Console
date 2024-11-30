@@ -101,7 +101,7 @@ if it's not work, change the terminal to warp :-)
 
 in warp, default line height is 1.5, recommend set it to 1.1
 
-<img src="./images/warp.jpg" alt="img" width="500" height="auto">
+<img src="./images/warp.jpg" alt="img" width="650" height="auto">
 
 
 
