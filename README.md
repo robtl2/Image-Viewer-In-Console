@@ -29,7 +29,7 @@ or just run:
 img <image_path>
 ``` 
 
-it's will print the image directly in the terminal like this:
+it will print the image directly in the terminal like this:
 
 <img src="./images/preview2.jpg" alt="img" width="500" height="auto">
 
