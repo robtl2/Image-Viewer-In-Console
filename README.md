@@ -31,12 +31,14 @@ img <image_path>
 
 ## Installation
 
-#### Linux
---------------------------------
+first, clone the repo to your local:
 
 ```bash
 git clone https://github.com/robtl2/Image-Viewer-In-Console.git
 ```
+
+#### Linux
+--------------------------------
 
 ```bash
 cd linux
@@ -56,10 +58,6 @@ python3 -m pip install -r requirements.txt
 
 #### macOS
 --------------------------------
-
-```bash
-git clone https://github.com/robtl2/Image-Viewer-In-Console.git
-```
 
 ```bash
 cd macOS
